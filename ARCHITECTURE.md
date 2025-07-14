@@ -8,7 +8,7 @@ This project implements a proper layered architecture for a catalog system using
 
 ```
 ┌─────────────────┐
-│   MCP Client    │  (Claude, VS Code, etc.)
+│   MCP Client    │  (VS Code, Claude, etc.)
 │   (Consumer)    │
 └─────────┬───────┘
           │ MCP Protocol
@@ -30,7 +30,7 @@ This project implements a proper layered architecture for a catalog system using
           │
           ▼
 ┌─────────────────┐
-│  REST API       │  (api-server.ts)
+│  REST API       │  (src/server-example/api-server.ts)
 │  Server         │  - Standard catalog API
 │  (Business      │  - RESTful endpoints
 │   Logic)        │  - Filtering & pagination
@@ -38,7 +38,7 @@ This project implements a proper layered architecture for a catalog system using
           │
           ▼
 ┌─────────────────┐
-│   Mock Data     │  (src/mock-data.ts)
+│   Mock Data     │  (src/server-example/mock-data.ts)
 │   (Data Layer)  │  - Product catalog
 └─────────────────┘  - Categories
 ```
@@ -71,14 +71,15 @@ This project implements a proper layered architecture for a catalog system using
 ## File Structure
 
 ```
-├── api-server.ts          # REST API server (Hono framework)
-├── demo.ts               # System demonstration script
 ├── src/
+│   ├── server-example/
+│       ├── api-server.ts # REST API server (Hono framework)
+│   ├── demo.ts           # System demonstration script
 │   ├── index.ts          # MCP server implementation
 │   ├── api-client.ts     # HTTP client for REST API
 │   ├── types.ts          # TypeScript type definitions
 │   └── mock-data.ts      # Sample catalog data
-├── eslint.config.js      # ESLint configuration
+├── eslint.config.mjs      # ESLint configuration
 ├── package.json          # Dependencies and scripts
 └── README.md            # Documentation
 ```

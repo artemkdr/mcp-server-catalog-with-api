@@ -8,10 +8,11 @@ A Model Context Protocol (MCP) server that provides catalog functionality throug
 Claude/MCP Client → MCP Server → REST API Server → Mock Data
 ```
 
-- **REST API Server** (`api-server.ts`): Standard catalog API with endpoints for products, categories, search, etc.
+- **REST API Server** (`src/server-example/api-server.ts`): Standard catalog API with endpoints for products, 
+- **Mock Data** (`src/server-example/mock-data.ts`): Sample product and category data categories, search, etc.
 - **MCP Server** (`src/index.ts`): MCP protocol server that consumes the REST API
 - **API Client** (`src/api-client.ts`): HTTP client for communicating with the REST API
-- **Mock Data** (`src/mock-data.ts`): Sample product and category data
+
 
 ## Features
 
