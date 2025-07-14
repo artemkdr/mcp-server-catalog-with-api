@@ -1,0 +1,13 @@
+{
+    "servers": {
+        "catalog-with-api": {
+            "type": "stdio",
+            "command": "bun",
+            "args": ["run", "index.ts"],
+            "cwd": "./src",
+            "env": {
+                "NODE_ENV": "development"
+            }
+        }
+    }
+}
