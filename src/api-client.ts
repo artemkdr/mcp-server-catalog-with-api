@@ -47,16 +47,16 @@ export class CatalogApiClient {
     }
 
     async searchProducts(params: {
-        query?: string;
-        category?: string;
-        brand?: string;
-        minPrice?: number;
-        maxPrice?: number;
-        inStockOnly?: boolean;
-        page?: number;
-        pageSize?: number;
-        sortBy?: string;
-        sortOrder?: string;
+        query?: string | undefined;
+        category?: string | undefined;
+        brand?: string | undefined;
+        minPrice?: number | undefined;
+        maxPrice?: number | undefined;
+        inStockOnly?: boolean | undefined;
+        page?: number | undefined;
+        pageSize?: number | undefined;
+        sortBy?: string | undefined;
+        sortOrder?: string | undefined;
     }) {
         const searchParams = new URLSearchParams();
 
@@ -110,7 +110,7 @@ export class CatalogApiClient {
         return this.request(`/api/v1/products/${productId}/availability`);
     }
 
-    async getCategories(parentId?: string, includeProductCount = true) {
+    async getCategories(parentId?: string | undefined, includeProductCount = true) {
         const params = new URLSearchParams();
         if (parentId) {
             params.append('parent_id', parentId);
@@ -130,7 +130,7 @@ export class CatalogApiClient {
         return this.request(`/api/v1/categories/${categoryId}/products?page=${page}&limit=${limit}`);
     }
 
-    async getPopularProducts(category?: string, limit = 10, minRating = 4.0) {
+    async getPopularProducts(category?: string | undefined, limit = 10, minRating = 4.0) {
         const params = new URLSearchParams();
         if (category) {
             params.append('category', category);
@@ -145,7 +145,7 @@ export class CatalogApiClient {
         return this.request(`/api/v1/categories/${categoryId}/price-range`);
     }
 
-    async getGeneralRecommendations(category?: string, limit = 5) {
+    async getGeneralRecommendations(category?: string | undefined, limit = 5) {
         if (category) {
             const params = new URLSearchParams();
             params.append('category', category);

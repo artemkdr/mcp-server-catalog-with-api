@@ -1,9 +1,7 @@
-#!/usr/bin/env bun
-
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { z } from 'zod/v3';
+import { z } from 'zod';
 
 import { CatalogApiClient } from './api-client.js';
 import type { Product, SearchResult } from './types.js';
@@ -12,35 +10,31 @@ import type { Product, SearchResult } from './types.js';
 const apiClient = new CatalogApiClient();
 
 // Initialize MCP server
-const server = new McpServer(
-    {
-        name: 'catalog-api-server',
-        version: '1.0.0',
-    },
-    {
-        capabilities: {
-            tools: {},
-        },
-    },
-);
+const server = new McpServer({
+    name: 'catalog-api-server',
+    version: '1.0.0',
+});
 
 // Register tools with the new API
-server.tool(
+server.registerTool(
     'search_products',
-    'Search for products in the catalog with filters and pagination',
     {
-        query: z.string().optional().describe('Search query string'),
-        category: z.string().optional().describe('Filter by category ID'),
-        brand: z.string().optional().describe('Filter by brand name'),
-        minPrice: z.number().optional().describe('Minimum price filter'),
-        maxPrice: z.number().optional().describe('Maximum price filter'),
-        inStockOnly: z.boolean().default(false).describe('Show only products in stock'),
-        page: z.number().default(1).describe('Page number for pagination'),
-        pageSize: z.number().default(10).describe('Number of products per page'),
-        sortBy: z.enum(['name', 'price', 'rating', 'createdAt']).default('name').describe('Sort products by field'),
-        sortOrder: z.enum(['asc', 'desc']).default('asc').describe('Sort order'),
+        title: 'search_products',
+        description: 'Search for products in the catalog with filters and pagination',
+        inputSchema: {
+            query: z.string().optional().describe('Search query string'),
+            category: z.string().optional().describe('Filter by category ID'),
+            brand: z.string().optional().describe('Filter by brand name'),
+            minPrice: z.number().optional().describe('Minimum price filter'),
+            maxPrice: z.number().optional().describe('Maximum price filter'),
+            inStockOnly: z.boolean().default(false).describe('Show only products in stock'),
+            page: z.number().default(1).describe('Page number for pagination'),
+            pageSize: z.number().default(10).describe('Number of products per page'),
+            sortBy: z.enum(['name', 'price', 'rating', 'createdAt']).default('name').describe('Sort products by field'),
+            sortOrder: z.enum(['asc', 'desc']).default('asc').describe('Sort order'),
+        },
     },
-    async ({ query, category, brand, minPrice, maxPrice, inStockOnly, page, pageSize, sortBy, sortOrder }) => {        
+    async ({ query, category, brand, minPrice, maxPrice, inStockOnly, page, pageSize, sortBy, sortOrder }) => {
         const apiResponse = await apiClient.searchProducts({
             query,
             category,
@@ -87,11 +81,14 @@ server.tool(
     },
 );
 
-server.tool(
+server.registerTool(
     'get_product_details',
-    'Get detailed information about a specific product',
     {
-        productId: z.string().describe('Product ID to retrieve details for'),
+        title: 'get_product_details',
+        description: 'Get detailed information about a specific product',
+        inputSchema: {
+            productId: z.string().describe('Product ID to retrieve details for'),
+        },
     },
     async ({ productId }) => {
         try {
@@ -113,12 +110,15 @@ server.tool(
     },
 );
 
-server.tool(
+server.registerTool(
     'get_categories',
-    'Get all product categories with hierarchy',
     {
-        parentId: z.string().optional().describe('Get subcategories of a specific parent category'),
-        includeProductCount: z.boolean().default(true).describe('Include product count for each category'),
+        title: 'get_categories',
+        description: 'Get all product categories with hierarchy',
+        inputSchema: {
+            parentId: z.string().optional().describe('Get subcategories of a specific parent category'),
+            includeProductCount: z.boolean().default(true).describe('Include product count for each category'),
+        },
     },
     async ({ parentId, includeProductCount }) => {
         const apiResponse = await apiClient.getCategories(parentId, includeProductCount);
@@ -134,13 +134,16 @@ server.tool(
     },
 );
 
-server.tool(
+server.registerTool(
     'get_product_recommendations',
-    'Get product recommendations based on a product or search criteria',
     {
-        productId: z.string().optional().describe('Get recommendations based on this product'),
-        category: z.string().optional().describe('Get recommendations from this category'),
-        limit: z.number().default(5).describe('Number of recommendations to return'),
+        title: 'get_product_recommendations',
+        description: 'Get product recommendations based on a product or search criteria',
+        inputSchema: {
+            productId: z.string().optional().describe('Get recommendations based on this product'),
+            category: z.string().optional().describe('Get recommendations from this category'),
+            limit: z.number().default(5).describe('Number of recommendations to return'),
+        },
     },
     async ({ productId, category, limit }) => {
         let apiResponse;
@@ -154,8 +157,13 @@ server.tool(
                 }
                 throw error;
             }
-        } else {
+        } else if (category) {
             apiResponse = await apiClient.getGeneralRecommendations(category, limit);
+        } else {
+            throw new McpError(
+                ErrorCode.InvalidRequest,
+                'Either productId or category must be provided for recommendations',
+            );
         }
 
         return {
@@ -169,11 +177,14 @@ server.tool(
     },
 );
 
-server.tool(
+server.registerTool(
     'check_product_availability',
-    'Check product availability and stock information',
     {
-        productId: z.string().describe('Product ID to check availability'),
+        title: 'check_product_availability',
+        description: 'Check product availability and stock information',
+        inputSchema: {
+            productId: z.string().describe('Product ID to check availability'),
+        },
     },
     async ({ productId }) => {
         try {
@@ -195,13 +206,16 @@ server.tool(
     },
 );
 
-server.tool(
+server.registerTool(
     'get_popular_products',
-    'Get popular products based on ratings and reviews',
     {
-        category: z.string().optional().describe('Filter by category'),
-        limit: z.number().default(10).describe('Number of products to return'),
-        minRating: z.number().default(4.0).describe('Minimum rating threshold'),
+        title: 'get_popular_products',
+        description: 'Get popular products based on ratings and reviews',
+        inputSchema: {
+            category: z.string().optional().describe('Filter by category'),
+            limit: z.number().default(10).describe('Number of products to return'),
+            minRating: z.number().default(4.0).describe('Minimum rating threshold'),
+        },
     },
     async ({ category, limit, minRating }) => {
         const apiResponse = await apiClient.getPopularProducts(category, limit, minRating);
@@ -217,11 +231,14 @@ server.tool(
     },
 );
 
-server.tool(
+server.registerTool(
     'get_price_range',
-    'Get price range information for products in a category',
     {
-        category: z.string().optional().describe('Category to get price range for'),
+        title: 'get_price_range',
+        description: 'Get price range information for products in a category',
+        inputSchema: {
+            category: z.string().optional().describe('Category to get price range for'),
+        },
     },
     async ({ category }) => {
         if (!category) {
