@@ -3,8 +3,7 @@
         "catalog-with-api": {
             "type": "stdio",
             "command": "bun",
-            "args": ["run", "index.ts"],
-            "cwd": "./src",
+            "args": ["run", "${workspaceFolder}/src/index.ts"],            
             "env": {
                 "NODE_ENV": "development"
             }
