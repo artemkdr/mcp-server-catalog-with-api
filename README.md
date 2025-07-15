@@ -8,13 +8,22 @@ A Model Context Protocol (MCP) server that provides catalog functionality throug
 Claude/MCP Client → MCP Server → REST API Server → Mock Data
 ```
 
-- **REST API Server** (`src/server-example/api-server.ts`): Standard catalog API with endpoints for products, 
-- **Mock Data** (`src/server-example/mock-data.ts`): Sample product and category data categories, search, etc.
 - **MCP Server** (`src/index.ts`): MCP protocol server that consumes the REST API
 - **API Client** (`src/api-client.ts`): HTTP client for communicating with the REST API
-
+- **REST API Server** (`src/server-example/api-server.ts`): Standard catalog API with endpoints for products, 
+- **Mock Data** (`src/server-example/mock-data.ts`): Sample product and category data categories, search, etc.
 
 ## Features
+
+### MCP Tools
+
+- `search_products` - Search for products with filters and pagination
+- `get_product_details` - Get detailed product information
+- `get_categories` - Get product categories with hierarchy
+- `get_product_recommendations` - Get product recommendations
+- `check_product_availability` - Check product availability and stock
+- `get_popular_products` - Get popular products by rating
+- `get_price_range` - Get price range information for categories
 
 ### REST API Endpoints
 
@@ -28,16 +37,6 @@ Claude/MCP Client → MCP Server → REST API Server → Mock Data
 - `GET /api/v1/categories/:id` - Get category details
 - `GET /api/v1/categories/:id/products` - Get products in category
 - `GET /api/v1/categories/:id/price-range` - Get price range for category
-
-### MCP Tools
-
-- `search_products` - Search for products with filters and pagination
-- `get_product_details` - Get detailed product information
-- `get_categories` - Get product categories with hierarchy
-- `get_product_recommendations` - Get product recommendations
-- `check_product_availability` - Check product availability and stock
-- `get_popular_products` - Get popular products by rating
-- `get_price_range` - Get price range information for categories
 
 ## Getting Started
 
@@ -96,10 +95,6 @@ curl "http://localhost:3001/api/v1/products/1"
 curl "http://localhost:3001/api/v1/categories"
 ```
 
-### API Documentation
-
-Visit http://localhost:3001/api/v1 for API information and available endpoints.
-
 ### Health Check
 
 Check if the API server is running:
@@ -119,13 +114,6 @@ curl "http://localhost:3001/health"
 
 - Protocol: stdio transport
 - API client base URL: `http://localhost:3001`
-
-## Development Notes
-
-- The project uses ESLint with TypeScript support and modern flat config
-- Code style enforces single quotes, trailing commas, and consistent formatting
-- Both servers support hot reload during development
-- The MCP server checks API server health on startup
 
 ## Example Usage
 
