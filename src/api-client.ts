@@ -1,3 +1,5 @@
+import { Category, Product } from './types.js';
+
 export interface ApiResponse<T> {
     data: T;
     pagination?: {
@@ -95,19 +97,25 @@ export class CatalogApiClient {
             ? `/api/v1/products/search?${searchParams.toString()}`
             : `/api/v1/products?${searchParams.toString()}`;
 
-        return this.request(endpoint);
+        return this.request<Product[]>(endpoint);
     }
 
     async getProductDetails(productId: string) {
-        return this.request(`/api/v1/products/${productId}`);
+        return this.request<Product>(`/api/v1/products/${productId}`);
     }
 
     async getProductRecommendations(productId: string, limit = 5) {
-        return this.request(`/api/v1/products/${productId}/recommendations?limit=${limit}`);
+        return this.request<Product[]>(`/api/v1/products/${productId}/recommendations?limit=${limit}`);
     }
 
     async checkProductAvailability(productId: string) {
-        return this.request(`/api/v1/products/${productId}/availability`);
+        return this.request<{
+            productId: string;
+            inStock: boolean;
+            stockQuantity: number;
+            availability: string;
+            lastUpdated: string;
+        }>(`/api/v1/products/${productId}/availability`);
     }
 
     async getCategories(parentId?: string | undefined, includeProductCount = true) {
@@ -119,15 +127,15 @@ export class CatalogApiClient {
             params.append('include_product_count', 'false');
         }
 
-        return this.request(`/api/v1/categories?${params.toString()}`);
+        return this.request<Category[]>(`/api/v1/categories?${params.toString()}`);
     }
 
     async getCategoryDetails(categoryId: string) {
-        return this.request(`/api/v1/categories/${categoryId}`);
+        return this.request<Category>(`/api/v1/categories/${categoryId}`);
     }
 
     async getCategoryProducts(categoryId: string, page = 1, limit = 10) {
-        return this.request(`/api/v1/categories/${categoryId}/products?page=${page}&limit=${limit}`);
+        return this.request<Product[]>(`/api/v1/categories/${categoryId}/products?page=${page}&limit=${limit}`);
     }
 
     async getPopularProducts(category?: string | undefined, limit = 10, minRating = 4.0) {
@@ -138,11 +146,17 @@ export class CatalogApiClient {
         params.append('limit', limit.toString());
         params.append('min_rating', minRating.toString());
 
-        return this.request(`/api/v1/products/popular?${params.toString()}`);
+        return this.request<Product[]>(`/api/v1/products/popular?${params.toString()}`);
     }
 
     async getCategoryPriceRange(categoryId: string) {
-        return this.request(`/api/v1/categories/${categoryId}/price-range`);
+        return this.request<{
+            categoryId: string;
+            minPrice: number;
+            maxPrice: number;
+            averagePrice: number;
+            productCount: number;
+        }>(`/api/v1/categories/${categoryId}/price-range`);
     }
 
     async getGeneralRecommendations(category?: string | undefined, limit = 5) {
@@ -153,7 +167,7 @@ export class CatalogApiClient {
             return this.request(`/api/v1/products?${params.toString()}&sort_by=rating&sort_order=desc`);
         }
 
-        return this.request(`/api/v1/products/popular?limit=${limit}`);
+        return this.request<Product[]>(`/api/v1/products/popular?limit=${limit}`);
     }
 
     async healthCheck() {

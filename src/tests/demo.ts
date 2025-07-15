@@ -51,7 +51,10 @@ async function demonstrateApi() {
         // Test availability
         console.log('6. Product Availability:');
         const availabilityResult = await client.checkProductAvailability('iphone-15-pro');
-        const availability = availabilityResult.data as Product;
+        const availability = availabilityResult.data as {
+            inStock: boolean;
+            stockQuantity: number;
+        };
         console.log(`   In Stock: ${availability?.inStock ? '✅ Yes' : '❌ No'}`);
         console.log(`   Quantity: ${availability?.stockQuantity}\n`);
 
