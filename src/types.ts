@@ -29,6 +29,14 @@ export interface Category {
     productCount: number;
 }
 
+export interface ProductAvailability {
+    inStock: boolean;
+    stockQuantity: number;
+    productId: string;
+    availability: string; // e.g., "in stock", "out of stock", "pre-order"
+    lastUpdated: string; // ISO date string
+}
+
 export interface SearchResult {
     products: Product[];
     totalCount: number;

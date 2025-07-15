@@ -1,4 +1,4 @@
-import { Category, Product } from './types.js';
+import { Category, Product, ProductAvailability } from './types.js';
 
 export interface ApiResponse<T> {
     data: T;
@@ -109,13 +109,7 @@ export class CatalogApiClient {
     }
 
     async checkProductAvailability(productId: string) {
-        return this.request<{
-            productId: string;
-            inStock: boolean;
-            stockQuantity: number;
-            availability: string;
-            lastUpdated: string;
-        }>(`/api/v1/products/${productId}/availability`);
+        return this.request<ProductAvailability>(`/api/v1/products/${productId}/availability`);
     }
 
     async getCategories(parentId?: string | undefined, includeProductCount = true) {
