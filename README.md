@@ -54,13 +54,13 @@ bun install
 
 1. **Start the API Server** (Terminal 1):
 ```bash
-bun run api-server
+bun api-server
 ```
 This starts the REST API server on http://localhost:3001
 
 2. **Start the MCP Server** (Terminal 2):
 ```bash
-bun run mcp-server
+bun mcp-server
 ```
 This starts the MCP server that connects to the API server
 
@@ -68,13 +68,13 @@ This starts the MCP server that connects to the API server
 
 - **API Server with hot reload**:
 ```bash
-bun run api-server
+bun api-server
 ```
 
 - **Run linting**:
 ```bash
-bun run lint
-bun run lint:fix
+bun lint
+bun lint:fix
 ```
 
 ### Testing the API

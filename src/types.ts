@@ -1,4 +1,4 @@
-// Types for our catalog system
+// Types for API client
 export interface Product {
     id: string;
     name: string;

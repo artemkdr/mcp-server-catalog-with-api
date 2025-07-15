@@ -1,5 +1,3 @@
-#!/usr/bin/env bun
-
 import { CatalogApiClient } from '../api-client.js';
 import { Category, Product } from '../types.js';
 

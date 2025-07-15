@@ -8,13 +8,14 @@
     "start": "bun run ./src/index.ts",
     "api-server": "bun run --watch ./src/server-example/api-server.ts",
     "mcp-server": "bun run ./src/index.ts",
-    "demo": "bun run ./src/tests/demo.ts",
     "build": "bun build ./src/index.ts",
     "test": "bun test",
     "typecheck": "npx tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:check": "eslint . --max-warnings 0"
+    "lint:check": "eslint . --max-warnings 0",
+    "api-client-demo": "bun run ./src/tests/api-client-demo.ts",
+    "test-mcp-server": "bun run ./src/tests/test-mcp-server.ts"    
   },
   "devDependencies": {
     "@faker-js/faker": "^9.9.0",

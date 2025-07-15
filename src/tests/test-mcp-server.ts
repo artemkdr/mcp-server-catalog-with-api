@@ -11,7 +11,7 @@ async function testMCPServer() {
     console.log('🚀 Testing MCP Catalog API Server...\n');
 
     // Start the MCP server
-    const serverProcess = spawn(['bun', 'run', 'index.ts'], {
+    const serverProcess = spawn(['bun', 'run', 'src/index.ts'], {
         stdio: ['pipe', 'pipe', 'inherit'],
         cwd: process.cwd(),
     });

@@ -14,7 +14,7 @@ cd mcp-server-catalog-with-api
 bun install
 
 # Start the server
-bun run start
+bun start
 ```
 
 ### 2. Configuration for Claude Desktop
@@ -37,7 +37,7 @@ Add this to your Claude Desktop MCP configuration file:
 
 ### 3. Available Tools
 
-Once configured, you can use these tools in Claude:
+Once configured, you can use these tools:
 
 #### 🔍 Product Search
 ```
@@ -112,21 +112,27 @@ The server comes with sample data:
 
 For development with auto-reload:
 ```bash
-bun run dev
+bun dev
 ```
 
 ## Testing the Server
 
-Run the demonstration script:
+### Run the demo of MCP server:
 ```bash
-bun run test-server.ts
+bun test-mcp-server
 ```
+
+### Run the demo of the API client used by the MCP server:
+```bash
+bun api-client-demo
+```
+
 
 This shows example requests and responses.
 
 ## Extending the Catalog
 
-To add more products or categories, edit the `products` and `categories` arrays in `index.ts`. 
+To add more products or categories, edit the `products` and `categories` arrays in `src/server-example/repositories/mock-data.ts`. 
 
 For production use, you would:
 1. Connect to a real database
@@ -139,14 +145,13 @@ For production use, you would:
 
 ### Server won't start
 - Ensure Bun is installed: `bun --version`
+- Install bun if not present: `npm install -g bun`
 - Check dependencies: `bun install`
-- Verify TypeScript compilation: No errors in `index.ts`
 
-### Tools not appearing in Claude
+### Tools not appearing in MCP client
 - Check MCP configuration file path
 - Verify server path is absolute
-- Restart Claude Desktop after config changes
-- Check Claude's developer console for errors
+- For Claude: restart Claude Desktop after config changes
 
 ### Server exits immediately
 - The server runs in stdio mode (normal behavior)
